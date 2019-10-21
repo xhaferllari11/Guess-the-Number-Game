@@ -9,11 +9,15 @@ const game = {
         (this.biggestNum - this.smallestNum + 1)) + this.smallestNum;
     },
     getGuess: function() {
-      let acceptableGuess = true;
-      //while (acceptableGuess) {
-        let guess = prompt(`Enter a guess between ${this.smallestNum} and ${this.biggestNum}`);
-        console.log(typeof(guess));
-      //}
+        // Maybe a bit sloppy with acceptGuess, fix
+        let acceptGuess;
+        do {
+            acceptGuess = false;
+            let guess = parseInt(prompt(`Enter a guess between ${this.smallestNum} and ${this.biggestNum}`));
+            if (isNaN(guess) || guess > this.biggestNum || guess<this.smallestNum) {
+                acceptGuess = true;
+            }
+        } while (acceptGuess);
     },
   };
   
