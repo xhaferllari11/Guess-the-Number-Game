@@ -5,21 +5,39 @@ const game = {
     secretNum: null,
     prevGuesses: [],
     play: function() {
-      this.secretNum = Math.floor(Math.random() * 
+        do {
+            this.smallestNum = parseInt(prompt('Enter samllest number'));
+        } while (isNaN(this.smallestNum));
+        do {         
+            this.biggestNum = parseInt(prompt('Enter biggest number'));
+        } while (isNaN(this.biggestNum) || this.biggestNum<=this.smallestNum);
+        this.secretNum = Math.floor(Math.random() * 
         (this.biggestNum - this.smallestNum + 1)) + this.smallestNum;
+        console.log(this.secretNum);
+        do  {
+            var currentGuess = this.getGuess();
+            this.prevGuesses.push(currentGuess);
+            console.log(currentGuess);
+        } while (this.render(currentGuess));
     },
     getGuess: function() {
-        // Maybe a bit sloppy with acceptGuess, fix
-        let acceptGuess;
         do {
-            acceptGuess = false;
-            let guess = parseInt(prompt(`Enter a guess between ${this.smallestNum} and ${this.biggestNum}`));
-            if (isNaN(guess) || guess > this.biggestNum || guess<this.smallestNum) {
-                acceptGuess = true;
-            }
-        } while (acceptGuess);
+            var guess = parseInt(prompt(`Enter a guess between ${this.smallestNum} and ${this.biggestNum}`));
+        } while (isNaN(guess) || guess > this.biggestNum || guess<this.smallestNum);
+        return guess;
     },
+    render: function(currentGuess) {
+        if (currentGuess === this.secretNum) {
+            alert(`Congrats! You guessed the number in ${this.prevGuesses.length} guesses!`);
+            return false;
+        } else {
+            let guessDirection =  (currentGuess>this.secretNum) ? 'high' : 'low';
+            alert(`Your guess is too ${guessDirection}
+            Previous guesses: ${this.prevGuesses.join(', ')}`);
+            return true;
+        }
+    }
   };
   
-  game.getGuess();
+  game.play();
   
