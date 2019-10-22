@@ -4,10 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Guess the Number Game</title>
 </head>
 <body>
-    <h1>JS Objects Lab</h1>
+    <div class="gamebox">
+        <h1>Guess the Number Game</h1>
+        <h2>Game Setup</h2>
+        <h3>Enter Mix and Max</h3>
+        <div>
+            <div class="min">
+                <h4>Min</h4>
+                <input type="text" placeholder="any digit">
+            </div>
+            <div class="max">
+                <h4>Max</h4>
+                <input type="text" placeholder="digit higher than min">
+            </div>
+        </div>
+        <button>Start Game</button>
+        <h3 class="gameStart">Guess the secret number: ______</h3>
+        <div class="guessBox">
+            <h4 class="enterGuess">Enter Guess here: </h4>
+            <input class="guessInput" type="text" placeholder="Guess Number">
+        </div>
+        <h4 class="computerOutput">Output</h4>
+        <h5>Your previously guessed numbers.</h5>
+        <h6 class="previousNumsIntro"></h6>
+        <h6 class="previousNums"></h6>
+
+    </div>
     <script src="js.js"></script>
 </body>
 </html>

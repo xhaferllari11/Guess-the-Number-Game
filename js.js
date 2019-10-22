@@ -1,3 +1,10 @@
+var minElement = document.querySelector('.min');
+var maxElement = document.querySelector('.max');
+var startButton = document.querySelector('button');
+var previousNumsIntro = document.querySelector('.previousNumsIntro');
+var previousNums = document.querySelector('.previousNums');
+
+
 const game = {
     title: 'Guess the Number!',
     biggestNum: 100,
@@ -5,19 +12,21 @@ const game = {
     secretNum: null,
     prevGuesses: [],
     play: function() {
+        // need to work on this because text input is comeing back NaN
         do {
-            this.smallestNum = parseInt(prompt('Enter samllest number'));
-        } while (isNaN(this.smallestNum));
+            this.smallestNum = parseInt(minElement.value);
+            console.log(this.smallestNum);
+        } while (false);
+            //isNaN(this.smallestNum));
         do {         
-            this.biggestNum = parseInt(prompt('Enter biggest number'));
-        } while (isNaN(this.biggestNum) || this.biggestNum<=this.smallestNum);
+            this.biggestNum = parseInt(maxElement.value);
+        } while (false);
+            //isNaN(this.biggestNum) || this.biggestNum<=this.smallestNum);
         this.secretNum = Math.floor(Math.random() * 
         (this.biggestNum - this.smallestNum + 1)) + this.smallestNum;
-        console.log(this.secretNum);
         do  {
             var currentGuess = this.getGuess();
             this.prevGuesses.push(currentGuess);
-            console.log(currentGuess);
         } while (this.render(currentGuess));
     },
     getGuess: function() {
@@ -32,12 +41,17 @@ const game = {
             return false;
         } else {
             let guessDirection =  (currentGuess>this.secretNum) ? 'high' : 'low';
-            alert(`Your guess is too ${guessDirection}
-            Previous guesses: ${this.prevGuesses.join(', ')}`);
+            previousNumsIntro.innerHTML = `Your last guess was too ${guessDirection}. Guess again between ${this.smallestNum} to ${this.biggestNum}.`;
+            previousNums.innerHTML = `Previous guesses: ${this.prevGuesses.join(', ')}`;
+
+            //alert(`Your guess is too ${guessDirection}
+            //Previous guesses: ${this.prevGuesses.join(', ')}`);
             return true;
         }
     }
-  };
-  
-  game.play();
-  
+};
+
+
+//need to change so when game.play is called from a button, this refers to game object not button element
+startButton.addEventListener("click", game.play.bind(game));
+//game.play();
