@@ -28,3 +28,8 @@ button {
 input.guessInput {
     display: inline-block;
 }
+
+.outputmessages {
+    background-color: red;
+    color: white
+}

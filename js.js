@@ -33,7 +33,7 @@ const game = {
             alert(`Congrats! You guessed the number in ${game.prevGuesses.length} guesses!`);
             return false;
         } else {
-            let guessDirection =  (currentGuess>game.secretNum) ? 'high' : 'low';
+            let guessDirection =  (currentGuess>game.secretNum) ? 'HIGH' : 'LOW';
             previousNumsIntro.innerHTML = `Your last guess was too ${guessDirection}. Guess again between ${this.smallestNum} to ${this.biggestNum}.`;
             previousNums.innerHTML = `Previous guesses: ${game.prevGuesses.join(', ')}`;
 
@@ -77,6 +77,7 @@ function startButtonEvent(evt) {
     guessBox.appendChild(guessInputBox);
     startButton.style.display = 'none';
     guessInputBox.addEventListener('keyup', guessEnterEvent);
+    guessInputBox.focus();
 };
 
 
@@ -98,4 +99,28 @@ function guessEnterEvent(evt){
 }
 
 //Add event handler for user pressing enter on a min/max field or on Guess field
+
+
+minElement.addEventListener('keyup', minValueEntered)
+function minValueEntered(evt){
+    if (evt.keyCode === 13 || evt.keyCode === 9){
+        outputMessages.textContent = "";
+        game.smallestNum = parseInt(minElement.value);
+        if (isNaN(game.smallestNum)) {
+            outputMessages.textContent = `Min digit needs to be a number`;
+            evt.target.focus();
+            return;
+        }
+        maxElement.focus();
+    }
+}
+
+maxElement.addEventListener('keyup', function(evt) {
+    if (evt.keyCode === 13 ){
+        startButtonEvent();
+    }
+});
+
+
+
 
