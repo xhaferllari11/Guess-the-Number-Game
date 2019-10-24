@@ -1,9 +1,10 @@
-var minElement = document.querySelector('.min');
-var maxElement = document.querySelector('.max');
+var minElement = document.querySelector('.mininput');
+var maxElement = document.querySelector('.maxinput');
 var startButton = document.querySelector('button');
 var previousNumsIntro = document.querySelector('.previousNumsIntro');
 var previousNums = document.querySelector('.previousNums');
-
+var outputMessages = document.querySelector('.outputmessages');
+var guessBox = document.querySelector('.guessbox');
 
 const game = {
     title: 'Guess the Number!',
@@ -12,22 +13,14 @@ const game = {
     secretNum: null,
     prevGuesses: [],
     play: function() {
-        // need to work on this because text input is comeing back NaN
-        do {
-            this.smallestNum = parseInt(minElement.value);
-            console.log(this.smallestNum);
-        } while (false);
-            //isNaN(this.smallestNum));
-        do {         
-            this.biggestNum = parseInt(maxElement.value);
-        } while (false);
-            //isNaN(this.biggestNum) || this.biggestNum<=this.smallestNum);
-        this.secretNum = Math.floor(Math.random() * 
-        (this.biggestNum - this.smallestNum + 1)) + this.smallestNum;
-        do  {
-            var currentGuess = this.getGuess();
-            this.prevGuesses.push(currentGuess);
-        } while (this.render(currentGuess));
+        game.secretNum = Math.floor(Math.random() * (game.biggestNum - game.smallestNum + 1)) + game.smallestNum;
+        //create a Try Guess! button, used by people with phones. Others press enter
+        // var 
+        // do  {
+        //     var currentGuess = this.getGuess();
+        //     this.prevGuesses.push(currentGuess);
+        // } while (false);
+            //this.render(currentGuess));
     },
     getGuess: function() {
         do {
@@ -37,12 +30,12 @@ const game = {
     },
     render: function(currentGuess) {
         if (currentGuess === this.secretNum) {
-            alert(`Congrats! You guessed the number in ${this.prevGuesses.length} guesses!`);
+            alert(`Congrats! You guessed the number in ${game.prevGuesses.length} guesses!`);
             return false;
         } else {
-            let guessDirection =  (currentGuess>this.secretNum) ? 'high' : 'low';
+            let guessDirection =  (currentGuess>game.secretNum) ? 'high' : 'low';
             previousNumsIntro.innerHTML = `Your last guess was too ${guessDirection}. Guess again between ${this.smallestNum} to ${this.biggestNum}.`;
-            previousNums.innerHTML = `Previous guesses: ${this.prevGuesses.join(', ')}`;
+            previousNums.innerHTML = `Previous guesses: ${game.prevGuesses.join(', ')}`;
 
             //alert(`Your guess is too ${guessDirection}
             //Previous guesses: ${this.prevGuesses.join(', ')}`);
@@ -53,5 +46,56 @@ const game = {
 
 
 //need to change so when game.play is called from a button, this refers to game object not button element
-startButton.addEventListener("click", game.play.bind(game));
-//game.play();
+startButton.addEventListener('click', startButtonEvent);
+//Need to add event listener to initialize game if user presses enter on min or max field
+
+function startButtonEvent(evt) {
+    outputMessages.textContent = "";
+    game.smallestNum = parseInt(minElement.value);
+    game.biggestNum = parseInt(maxElement.value);
+    if (isNaN(game.smallestNum)) {
+        outputMessages.textContent = `Min digit needs to be a number`;
+        return;
+    }
+    if (isNaN(game.biggestNum)) {
+        outputMessages.textContent = `Max digit needs to be a number`;
+        return;
+    } else if (game.biggestNum<game.smallestNum) {
+        outputMessages.textContent = `Max digit needs to be higher than min`;
+        return;
+    }
+    game.play();
+    console.log(game.secretNum);
+    var direction = document.createElement('h4');
+    direction.textContent = 'Enter Guess here:';
+    direction.classList.add('enterguess');
+    guessBox.appendChild(direction);
+    var guessInputBox = document.createElement('input');
+    guessInputBox.classList.add('guessinput');
+    guessInputBox.setAttribute('type','text');
+    guessInputBox.setAttribute('placeholder','Enter Guess');
+    guessBox.appendChild(guessInputBox);
+    startButton.style.display = 'none';
+    guessInputBox.addEventListener('keyup', guessEnterEvent);
+};
+
+
+function guessEnterEvent(evt){
+    if (evt.keyCode === 13){
+        outputMessages.textContent = "";
+        var userGuess = parseInt(evt.target.value);
+        if (isNaN(userGuess)) {
+            outputMessages.textContent = `Guess must be an integer`;
+            return;
+        } else if (userGuess>game.biggestNum || userGuess<game.smallestNum){
+            outputMessages.textContent = `Guess must an integer from ${game.smallestNum} to ${game.biggestNum}`;
+            return;
+        }
+        game.prevGuesses.push(userGuess);
+        game.render(userGuess);
+        evt.target.value = "";
+    }
+}
+
+//Add event handler for user pressing enter on a min/max field or on Guess field
+
