@@ -14,13 +14,6 @@ const game = {
     prevGuesses: [],
     play: function() {
         game.secretNum = Math.floor(Math.random() * (game.biggestNum - game.smallestNum + 1)) + game.smallestNum;
-        //create a Try Guess! button, used by people with phones. Others press enter
-        // var 
-        // do  {
-        //     var currentGuess = this.getGuess();
-        //     this.prevGuesses.push(currentGuess);
-        // } while (false);
-            //this.render(currentGuess));
     },
     getGuess: function() {
         do {
